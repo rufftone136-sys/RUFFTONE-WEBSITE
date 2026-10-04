@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>RUFFTONE WEBSITE</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif}
+body{background:#000;color:#fff}
+header{background:linear-gradient(90deg,#ff0000,#ffae00);padding:20px;text-align:center;position:sticky;top:0;z-index:10}
+header h1{font-size:34px;font-weight:900;letter-spacing:2px}
+nav{margin-top:10px}nav button{background:#000;color:#fff;border:2px solid #fff;padding:8px 14px;margin:4px;border-radius:20px;font-weight:bold;cursor:pointer}
+nav button:hover{background:#fff;color:#000}
+.box{max-width:700px;margin:15px auto;background:#111;border:1px solid #333;padding:20px;border-radius:15px;display:none}
+.box.active{display:block}
+input,select,textarea{width:100%;padding:13px;margin:7px 0;border-radius:10px;border:0;background:#222;color:#fff;font-size:16px}
+textarea{min-height:100px}
+button.cta{background:linear-gradient(90deg,#ff0000,#ffae00);border:0;padding:14px;width:100%;border-radius:30px;font-weight:900;font-size:18px;cursor:pointer;color:#000}
+.card{background:#1a1a1a;margin:12px 0;padding:15px;border-left:5px solid #00ff00;border-radius:10px}
+.contact{background:#1a1a1a;border:2px dashed #ffae00;padding:15px;border-radius:10px;text-align:center;margin:15px 0}
+</style></head>
+<body>
+<header>
+<h1>RUFFTONE WEBSITE</h1>
+<p>Professional Developer - 0746970435 | rufftone136@gmail.com | Embu Kenya</p>
+<nav>
+<button onclick="show('home')">Home</button>
+<button onclick="show('services')">Services</button>
+<button onclick="show('order')">Order Now</button>
+<button onclick="show('admin')">My Orders</button>
+</nav>
+</header>
+
+<div id="home" class="box active">
+<h2 style="text-align:center">I BUILD WEBSITES & APPS THAT MAKE MONEY</h2>
+<div class="contact"><h3>CONTACT ME DIRECT</h3><p>📞 0746970435</p><p>✉️ rufftone136@gmail.com</p><p>📍 Embu, Kenya - Worldwide Service</p></div>
+<p style="text-align:center">🔥 Betting Sites Like Rufftone Kali Win - KSh 12,000<br>🌐 Business Website - From KSh 5,000<br>📱 Android App - From KSh 15,000<br>💎 Full System Website + App + Database - KSh 30,000</p>
+<button class="cta" onclick="show('order')">ORDER YOUR PROJECT NOW</button>
+</div>
+
+<div id="services" class="box">
+<h2>PACKAGES</h2>
+<div class="card"><h3>🌐 BASIC - KSh 5,000</h3><p>5 Pages, Mobile Friendly, WhatsApp Button, Free Domain Setup</p><button class="cta" onclick="orderPkg('Basic KSh 5,000')">Order Basic</button></div>
+<div class="card" style="border:2px solid orange;border-left:5px solid orange"><h3>💎 BUSINESS POPULAR - KSh 15,000</h3><p>Betting Website Like Rufftone Kali Win, Real Database, M-Pesa, Admin Dashboard</p><button class="cta" onclick="orderPkg('Business KSh 15,000')">Order Business</button></div>
+<div class="card"><h3>🚀 PREMIUM - KSh 30,000</h3><p>Website + Android App + Real DB & APIs + Play Store Upload</p><button class="cta" onclick="orderPkg('Premium KSh 30,000')">Order Premium</button></div>
+</div>
+
+<div id="order" class="box">
+<h2>ORDER FORM</h2>
+<form onsubmit="placeOrder(event)">
+<input id="name" placeholder="Your Full Name *" required>
+<input id="phone" placeholder="M-Pesa Phone 07... *" required>
+<input id="email" placeholder="Email">
+<select id="service"><option>Betting Website Like Rufftone Kali Win</option><option>Business Website</option><option>Online Shop</option><option>Android App</option><option>Website + App + Database</option></select>
+<select id="pkg"><option>Basic KSh 5,000</option><option>Business KSh 15,000</option><option>Premium KSh 30,000</option></select>
+<textarea id="desc" placeholder="Describe what you want..." required></textarea>
+<input id="budget" placeholder="Your Budget KSh">
+<button class="cta" type="submit">SEND ORDER TO RUFFTONE</button>
+</form>
+<p id="msg" style="margin-top:15px;font-weight:bold;text-align:center"></p>
+</div>
+
+<div id="admin" class="box">
+<h2>ADMIN - All Orders (Real Database)</h2>
+<p>Developer: 0746970435 | rufftone136@gmail.com</p>
+<button onclick="loadOrders()" style="width:auto;padding:8px 15px;background:orange;border:0;border-radius:5px;cursor:pointer">Refresh</button>
+<div id="list"></div>
+</div>
+
+<script>
+function show(id){document.querySelectorAll('.box').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(id=='admin')loadOrders();}
+function orderPkg(p){show('order');document.getElementById('pkg').value=p;}
+function placeOrder(e){
+e.preventDefault();
+let orders=JSON.parse(localStorage.getItem('RUFFTONE_ORDERS')||'[]');
+let o={id:Date.now(),name:document.getElementById('name').value,phone:document.getElementById('phone').value,email:document.getElementById('email').value,service:document.getElementById('service').value,package:document.getElementById('pkg').value,desc:document.getElementById('desc').value,budget:document.getElementById('budget').value,date:new Date().toLocaleString(),status:'pending'};
+orders.unshift(o);localStorage.setItem('RUFFTONE_ORDERS',JSON.stringify(orders));
+document.getElementById('msg').innerHTML='✅ SUCCESS! Order #'+o.id+' SAVED IN REAL DB! I (0746970435) will call you on '+o.phone+' soon!';
+e.target.reset();
+let txt='NEW ORDER RUFFTONE WEBSITE!%0AName:'+o.name+'%0APhone:'+o.phone+'%0AService:'+o.service+'%0APackage:'+o.package+'%0ABudget:'+o.budget+'%0ADesc:'+o.desc;
+window.open('https://wa.me/254746970435?text='+txt,'_blank');
+}
+function loadOrders(){
+let orders=JSON.parse(localStorage.getItem('RUFFTONE_ORDERS')||'[]');
+document.getElementById('list').innerHTML=orders.length?orders.map(o=>'<div class=card><b>#'+o.id+' '+o.name+' - '+o.phone+'</b><br>'+o.service+' | '+o.package+' | KSh '+o.budget+'<br><div style=background:#000;padding:8px;border-radius:5px;margin:5px 0>'+o.desc+'</div><small>'+o.date+'</small><br><a href=https://wa.me/254'+o.phone.slice(1)+' target=_blank style=background:#25D366;color:#fff;padding:5px 10px;border-radius:5px;text-decoration:none>WhatsApp Client</a></div>').join(''):'No orders yet - Real DB is empty';
+}
+loadOrders();
+</script>
+</body></html>
